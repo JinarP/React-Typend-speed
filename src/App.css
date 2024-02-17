@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+
 }
 
 .App-logo {
@@ -35,4 +36,23 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.game-container {
+display: flex;
+justify-content: center;
+width: 100%;
+}
+
+.displayed-word {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-color: #61dafb;
+  background-color: #d7d8c6;
+  width: auto;
+  max-width: 300px;
 }
