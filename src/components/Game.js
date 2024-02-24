@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import CheckWord from './checkWord';
+import WordPreview from './Check';
 import './App.css';
 
 const words = ['apple', 'banana', 'cherry', 'date', 'fig', 'grape', 'kiwi', 'lemon', 'mango', 'orange', 'peach', 'pineapple', 'raspberry', 'strawberry', 'watermelon'];
 
 const Game = () => {
   const [word, setWord] = useState('');
-  const [displayedWord, setDisplayedWord] = useState('');
+  // const [displayedWord, setDisplayedWord] = useState('');
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(60);
   const [isGameOver, setIsGameOver] = useState(false);
   const [winner, setWinner] = useState(false);
+  const [typedWord, setTypedWord] = useState();
 
   useEffect(() => {
     const randomWord = words[Math.floor(Math.random() * words.length)];
     setWord(randomWord);
-    setDisplayedWord(randomWord);
     setWinner(false);
   }, [isGameOver, winner]);
 
@@ -23,17 +23,19 @@ const Game = () => {
     if (timeLeft === 0) {
       setIsGameOver(true);
     }
+    
   }, [timeLeft]);
 
   useEffect(() => {
     if (!isGameOver) {
       const interval = setInterval(() => {
-        setTimeLeft((timeLeft) => timeLeft - 1);
+        setTimeLeft(timeLeft => timeLeft - 1);
       }, 1000);
-
+  
       return () => clearInterval(interval);
     }
-  }, [isGameOver]);
+  }, [isGameOver, timeLeft]); 
+  
 
   const handleRestart = () => {
     setScore(0);
@@ -41,21 +43,30 @@ const Game = () => {
     setIsGameOver(false);
   };
 
+  const handleInputChange = (e) => {
+    setTypedWord(e.target.value)
+    console.log(word, "", typedWord)
+    if (typedWord === word) {
+      setWinner(true)
+      setScore(score => score + 1);
+    }
+  } 
+
   return (
     <div className="App">
       <h1>Typing Speed Game</h1>
       <div className="game-container">
-        <CheckWord
+    
+        <WordPreview
           word={word}
-          displayedWord={displayedWord}
-          setDisplayedWord={setDisplayedWord}
-          score={score}
-          setScore={setScore}
-          isGameOver={isGameOver}
-          setIsGameOver={setIsGameOver}
-          setWinner={setWinner}
+          typedWord = {typedWord}
         />
-      </div>
+       </div>
+      <input
+        type="text"
+        onKeyUp={handleInputChange}
+        
+      />
       <div className="score-container">
         <p>Score: {score}</p>
         <p>Time Left: {timeLeft}s</p>
